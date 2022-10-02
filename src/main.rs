@@ -18,3 +18,9 @@ impl Server {
         println!("server: {}", self.addr);
     }
 }
+
+struct Request {
+    path: String,
+    query_string: String,
+    method: String,
+}
