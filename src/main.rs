@@ -24,3 +24,15 @@ struct Request {
     query_string: String,
     method: String,
 }
+
+enum Method {
+    GET,
+    DELETE,
+    POST,
+    PUT,
+    HEAD,
+    CONNECT,
+    OPTIONS,
+    TRACE,
+    PATCH
+}
