@@ -15,5 +15,8 @@ impl Server {
         println!("server: {}", self.addr);
 
         let listener = TcpListener::bind(&self.addr).unwrap();
+        loop {
+            listener.accept().unwrap();
+        }
     }
 }
