@@ -13,10 +13,22 @@ impl Server {
 
     pub fn run(self) {
         println!("server: {}", self.addr);
-
         let listener = TcpListener::bind(&self.addr).unwrap();
         loop {
-            listener.accept().unwrap();
+            match listener.accept() {
+                Ok((stream, _addr)) => {
+                    // let res = listener.accept();
+
+                    // if res.is_err() {
+                    //     continue;
+                    // }
+                    // let (stream, addr) = res.unwrap();
+                    println!("accept {:?}", stream);
+                },
+                Err(e) => println!("err: {}", e),
+            }
+            
+
         }
     }
 }
