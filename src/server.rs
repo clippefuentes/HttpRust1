@@ -18,7 +18,12 @@ impl Server {
             match listener.accept() {
                 Ok((mut stream, _addr)) => {
                     let mut buffer = [0; 1024];
-                    stream.read(&mut buffer);
+                    match stream.read(&mut buffer) {
+                        Ok(_) => {
+                            println!("Value: {}", String::from_utf8_lossy(&buffer));
+                        },
+                        Err(e) => println!("Error: {}", e),
+                    }
                     println!("accept {:?}", stream);
                 },
                 Err(e) => println!("err: {}", e),
