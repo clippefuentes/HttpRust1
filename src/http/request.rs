@@ -1,5 +1,14 @@
 use super::method::Method;
-use std::{convert::TryFrom};
+use std::{
+    convert::TryFrom,
+    error::Error, 
+    fmt::{
+        Display,
+        Formatter,
+        Result as FMTResult,
+        Debug
+    }
+};
 
 pub struct Request {
     path: String,
@@ -17,25 +26,37 @@ impl TryFrom<&[u8]> for Request {
     type Error = String;
 
     fn try_from(buf: &[u8]) -> Result<Self, Self::Error> {
-        let string = String::from("asd");
-        string.encrypt();
-        buf.encrypt();
         unimplemented!()
     }
 }
 
-trait Encrypt {
-    fn encrypt(&self) -> Self;
-}
-
-impl Encrypt for String {
-    fn encrypt(&self) -> Self {
-        unimplemented!()
+impl Display for ParseError {
+    fn fmt(&self, f: &mut Formatter) -> FMTResult {
+        write!(f, "{}", self.message())
     }
 }
 
-impl Encrypt for &[u8] {
-    fn encrypt(&self) -> Self {
-        unimplemented!()
+impl Debug for ParseError {
+    fn fmt(&self, f: &mut Formatter) -> FMTResult {
+        write!(f, "{}", self.message())
     }
 }
+
+pub enum ParseError {
+    InvalidRequest,
+    InvalidEncoding,
+    InvalidProtocol,
+    InvalidMethod,
+}
+
+impl ParseError {
+    fn message(&self) -> &str {
+        match self {
+            Self::InvalidRequest => "InvalidRequest",
+            Self::InvalidEncoding => "InvalidEncoding",
+            Self::InvalidProtocol => "InvalidProtocol",
+            Self::InvalidMethod => "InvalidMethod",
+        }
+    }
+}
+impl Error for ParseError {}
