@@ -1,7 +1,9 @@
 use super::method::Method;
 use std::{
     convert::TryFrom,
-    error::Error, 
+    error::Error,
+    str,
+    str::Utf8Error,
     fmt::{
         Display,
         Formatter,
@@ -23,11 +25,12 @@ impl Request {
 }
 
 impl TryFrom<&[u8]> for Request {
-    type Error = String;
+    type Error = ParseError;
 
     fn try_from(buf: &[u8]) -> Result<Self, Self::Error> {
+        let request = str::from_utf8(buf)?;
         unimplemented!()
-    }
+    }   
 }
 
 impl Display for ParseError {
@@ -47,6 +50,12 @@ pub enum ParseError {
     InvalidEncoding,
     InvalidProtocol,
     InvalidMethod,
+}
+
+impl From<Utf8Error> for ParseError {
+    fn from(_: Utf8Error) -> Self {
+        Self::InvalidEncoding
+    }
 }
 
 impl ParseError {
