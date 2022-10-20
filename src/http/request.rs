@@ -27,10 +27,21 @@ impl Request {
 impl TryFrom<&[u8]> for Request {
     type Error = ParseError;
 
-    fn try_from(buf: &[u8]) -> Result<Self, Self::Error> {
+    fn try_from(buf: &[u8]) -> Result<Self, Self::Error> { 
         let request = str::from_utf8(buf)?;
         unimplemented!()
     }   
+}
+
+fn get_net_word(request: &str) -> Option<(&str, &str)> {
+    let mut iter = request.chars();
+    for (i, c) in request.chars().enumerate() {
+        if c == ' ' {
+            return Some((&request[..i], &request[i+1..]));
+        }
+    }
+
+    None
 }
 
 impl Display for ParseError {
